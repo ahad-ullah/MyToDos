@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyToDos.Data;
 using ToDoApp.Models;
 
@@ -20,8 +22,9 @@ namespace ToDoApp.Controllers
         }
         public IActionResult Index()
         {
-            
-            var myTodos = _context.toDos.Where(x => x.UserId== User.Identity.Name).ToList();
+
+            var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            var myTodos = _context.toDos.Where(x=>x. ==user.Id).ToList();
             return View(myTodos);
         }
         [HttpPost]
@@ -33,16 +36,17 @@ namespace ToDoApp.Controllers
             {
                 check = false;
                 var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-                ToDos toDos = new ToDos() { ToDo = todo, User = (Users)user, UserId = user.Id };
+                ToDos toDos = new ToDos() { ToDo = todo, UserId = user.Id };
+
                 _context.toDos.Add(toDos);
                 _context.SaveChanges();
 
                 return View(check);
             }
-            catch
+            catch (Exception ex)
             {
-
-                return View(check);
+                Console.WriteLine(ex.Message);
+                return Json(HttpStatusCode.InternalServerError); 
             }
         }
         public IActionResult Edit(int Id)

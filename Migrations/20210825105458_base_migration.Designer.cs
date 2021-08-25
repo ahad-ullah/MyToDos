@@ -9,8 +9,8 @@ using MyToDos.Data;
 namespace MyToDos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210825082515_addedInUserDOB")]
-    partial class addedInUserDOB
+    [Migration("20210825105458_base_migration")]
+    partial class base_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,16 +35,11 @@ namespace MyToDos.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
-
-                    b.HasIndex("ToDosId");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -65,14 +60,9 @@ namespace MyToDos.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("ToDosId");
 
                     b.ToTable("AspNetRoleClaims");
                 });
@@ -126,9 +116,6 @@ namespace MyToDos.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
@@ -144,8 +131,6 @@ namespace MyToDos.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("ToDosId");
 
                     b.ToTable("AspNetUsers");
 
@@ -164,16 +149,11 @@ namespace MyToDos.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ToDosId");
 
                     b.HasIndex("UserId");
 
@@ -193,16 +173,11 @@ namespace MyToDos.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("ToDosId");
 
                     b.HasIndex("UserId");
 
@@ -217,14 +192,9 @@ namespace MyToDos.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("ToDosId");
 
                     b.ToTable("AspNetUserRoles");
                 });
@@ -242,15 +212,10 @@ namespace MyToDos.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDosId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.HasIndex("ToDosId");
 
                     b.ToTable("AspNetUserTokens");
                 });
@@ -264,15 +229,12 @@ namespace MyToDos.Migrations
                     b.Property<string>("ToDo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("usersId")
+                    b.Property<string>("UsersId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("usersId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("toDos");
                 });
@@ -287,13 +249,6 @@ namespace MyToDos.Migrations
                     b.HasDiscriminator().HasValue("Users");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ToDosId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -301,25 +256,10 @@ namespace MyToDos.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("RoleClaims")
-                        .HasForeignKey("ToDosId");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ToDosId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("UserClaims")
-                        .HasForeignKey("ToDosId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -329,10 +269,6 @@ namespace MyToDos.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("UserLogins")
-                        .HasForeignKey("ToDosId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -348,10 +284,6 @@ namespace MyToDos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("ToDosId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -361,10 +293,6 @@ namespace MyToDos.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ToDoApp.Models.ToDos", null)
-                        .WithMany("UserTokens")
-                        .HasForeignKey("ToDosId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -374,28 +302,16 @@ namespace MyToDos.Migrations
 
             modelBuilder.Entity("ToDoApp.Models.ToDos", b =>
                 {
-                    b.HasOne("Identity.Models.Users", "users")
-                        .WithMany()
-                        .HasForeignKey("usersId");
-
-                    b.Navigation("users");
-                });
-
-            modelBuilder.Entity("ToDoApp.Models.ToDos", b =>
-                {
-                    b.Navigation("RoleClaims");
-
-                    b.Navigation("Roles");
-
-                    b.Navigation("UserClaims");
-
-                    b.Navigation("UserLogins");
-
-                    b.Navigation("UserRoles");
+                    b.HasOne("Identity.Models.Users", "Users")
+                        .WithMany("ToDos")
+                        .HasForeignKey("UsersId");
 
                     b.Navigation("Users");
+                });
 
-                    b.Navigation("UserTokens");
+            modelBuilder.Entity("Identity.Models.Users", b =>
+                {
+                    b.Navigation("ToDos");
                 });
 #pragma warning restore 612, 618
         }
