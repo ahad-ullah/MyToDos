@@ -9,8 +9,8 @@ using MyToDos.Data;
 namespace MyToDos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210825105458_base_migration")]
-    partial class base_migration
+    [Migration("20210826060509_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -227,6 +227,9 @@ namespace MyToDos.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ToDo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UsersId")

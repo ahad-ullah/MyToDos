@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyToDos.Migrations
 {
-    public partial class base_migration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -161,6 +161,7 @@ namespace MyToDos.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ToDo = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
                     UsersId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

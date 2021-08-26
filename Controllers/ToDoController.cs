@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyToDos.Data;
+using MyToDos.ExtenstionFunctions;
 using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
@@ -24,24 +25,19 @@ namespace ToDoApp.Controllers
         {
 
             var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-            var myTodos = _context.toDos.Where(x=>x. ==user.Id).ToList();
+            var myTodos = _context.toDos.Where(x => x.UserId == User.Identity.GetUserId()).ToList();
             return View(myTodos);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(string todo)
         {
-            bool check = true;
             try
             {
-                check = false;
                 var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-                ToDos toDos = new ToDos() { ToDo = todo, UserId = user.Id };
-
+                ToDos toDos = new ToDos() { ToDo = todo, UserId = User.Identity.GetUserId() };
                 _context.toDos.Add(toDos);
                 _context.SaveChanges();
-
-                return View(check);
+                return Json("Ok");
             }
             catch (Exception ex)
             {
@@ -70,7 +66,7 @@ namespace ToDoApp.Controllers
                 return RedirectToAction(nameof(Edit));
             }
         }
-        public IActionResult Delete(int Id, int UserId)
+        public IActionResult Delete(int Id, string UserId)
         {
             Users user = _context.users.Find(UserId);
             ToDos toDos = _context.toDos.Find(Id);

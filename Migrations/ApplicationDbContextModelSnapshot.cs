@@ -227,6 +227,9 @@ namespace MyToDos.Migrations
                     b.Property<string>("ToDo")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UsersId")
                         .HasColumnType("TEXT");
 
