@@ -1,4 +1,4 @@
-﻿@model List<ToDoApp.Models.ToDos>
+﻿@model Tuple<Microsoft.AspNetCore.Identity.IdentityUser, List<MyToDos.Models.ToDos>>
 @{
     Layout = null;
  }
@@ -68,18 +68,18 @@
                 <div class="col mx-auto">
                     <!-- Todo Item 1 -->
                     <div class="row px-3 align-items-center todo-item rounded">
-                        <table class="table">
+                        <table class="table" id="">
                             <thead>
 
                                 <tr>
                                     <th>#</th>
                                     <th>ToDos</th>
-                                    <th>User Id</th>
+                                    <th>User Name</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.Item2)
                                 {
                                     <tr>
 
@@ -91,7 +91,7 @@
                                             @item.ToDo
                                         </td>
                                         <td>
-                                            @item.UserId
+                                            @Model.Item1.UserName
                                         </td>
                                         <td>
                                             <a asp-action="Edit" asp-route-Id="@item.Id"><i class="fa fa-pencil-square-o" style="font-size:20px" aria-hidden="true"></i></a>
@@ -116,8 +116,8 @@
                 },
                 success: function (response) {
                     if (response == "Ok") {
-                        location.reload();
-                        toastr.success("ToDo Added")
+                        toastr.success("ToDo Added");
+                        setTimeout(location.reload.bind(location), 6000);
                     }
                     else {
                         alert(response);
@@ -126,5 +126,6 @@
             })
         };
     </script>
+
 </body>
 </html>

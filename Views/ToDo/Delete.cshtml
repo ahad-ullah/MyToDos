@@ -1,4 +1,4 @@
-﻿@model Tuple<ToDoApp.Models.User,ToDoApp.Models.ToDos>
+﻿@model Tuple<Microsoft.AspNetCore.Identity.IdentityUser, MyToDos.Models.ToDos>
 
 @{
     ViewData["Title"] = "Delete";
@@ -18,15 +18,15 @@
             @Html.DisplayFor(model => model.Item2.ToDo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item2.user)
+            @Html.DisplayNameFor(model => model.Item2.Users)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item1.Email)
+            @Html.DisplayFor(model => model.Item1.UserName)
         </dd>
     </dl>
 
     <form asp-action="ConfirmDelete" method="post">
-        <input style="display:none" type="text"  name="toDoId" value="@Model.Item2.Id" readonly />
+        <input style="display:none" type="text" name="toDoId" value="@Model.Item2.Id" readonly />
         <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
     <div>

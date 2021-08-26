@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyToDos.Data;
 using MyToDos.ExtenstionFunctions;
-using ToDoApp.Models;
+using MyToDos.Models;
 
-namespace ToDoApp.Controllers
+namespace MyToDos.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class ToDoController : Controller
     {
         private ApplicationDbContext _context;
@@ -26,7 +26,8 @@ namespace ToDoApp.Controllers
 
             var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
             var myTodos = _context.toDos.Where(x => x.UserId == User.Identity.GetUserId()).ToList();
-            return View(myTodos);
+            Tuple<Microsoft.AspNetCore.Identity.IdentityUser, List<ToDos>> data = new Tuple<Microsoft.AspNetCore.Identity.IdentityUser, List<ToDos>>(user, myTodos);
+            return View(data);
         }
         [HttpPost]
         public IActionResult Create(string todo)
@@ -68,9 +69,9 @@ namespace ToDoApp.Controllers
         }
         public IActionResult Delete(int Id, string UserId)
         {
-            Users user = _context.users.Find(UserId);
+            var user = _context.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
             ToDos toDos = _context.toDos.Find(Id);
-            Tuple<Users, ToDos> data = new Tuple<Users, ToDos>(user, toDos);
+            Tuple<Microsoft.AspNetCore.Identity.IdentityUser, ToDos> data = new Tuple<Microsoft.AspNetCore.Identity.IdentityUser, ToDos>(user, toDos);
             return View(data);
         }
         [HttpPost]

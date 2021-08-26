@@ -20,6 +20,10 @@ namespace MyToDos.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "ToDo");
+            }
             return View();
         }
 

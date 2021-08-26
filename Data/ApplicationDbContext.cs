@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ToDoApp.Models;
+using MyToDos.Models;
 
 namespace MyToDos.Data
 {
