@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace MyToDos.ExtenstionFunctions
-{
+{ 
     public static class Helpers
     {
         public static string GetUserId(this IIdentity identity)
